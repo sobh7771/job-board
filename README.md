@@ -12,6 +12,10 @@ Check out the live demo here: [Job Board Demo](https://job-board-hems.onrender.c
 - Job listings for employers
 - Job application management for job-seekers
 
+## 🎨 Theme
+
+This project uses the **Dracula** color palette, providing a visually appealing and consistent look across the application.
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js, React
