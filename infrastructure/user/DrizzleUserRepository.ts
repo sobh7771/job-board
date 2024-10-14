@@ -5,7 +5,7 @@ import { UserNotFoundError, UserRepository, UserSaveError } from '@/domain/user/
 import { db } from '@/lib/drizzle/db';
 import { User, userTable } from '@/lib/drizzle/schema';
 
-export class UserRepositoryImpl implements UserRepository {
+export class DrizzleUserRepository implements UserRepository {
   async findByEmail(email: string): Promise<Result<User | null, UserNotFoundError>> {
     return ResultAsync.fromPromise(
       db
