@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0ad2c820-515f-42df-b37a-474caa05b11b",
+  "id": "9c88d9f4-f7f4-4976-868a-d0e609625fb7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "applications": {
@@ -91,7 +91,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781243
+          "default": 1728431520948
         },
         "updated_at": {
           "name": "updated_at",
@@ -99,7 +99,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781243
+          "default": 1728431520948
         }
       },
       "indexes": {
@@ -241,7 +241,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781243
+          "default": 1728431520948
         },
         "updated_at": {
           "name": "updated_at",
@@ -249,7 +249,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781243
+          "default": 1728431520948
         }
       },
       "indexes": {},
@@ -327,7 +327,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781244
+          "default": 1728431520948
         },
         "updated_at": {
           "name": "updated_at",
@@ -335,7 +335,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781244
+          "default": 1728431520948
         }
       },
       "indexes": {},
@@ -418,7 +418,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781243
+          "default": 1728431520947
         },
         "updated_at": {
           "name": "updated_at",
@@ -426,7 +426,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728276781243
+          "default": 1728431520947
         }
       },
       "indexes": {

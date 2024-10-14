@@ -1,109 +1,118 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { v4 as uuidv4 } from 'uuid';
 
-enum Role {
+// Enums for user roles
+export enum Role {
   JOB_SEEKER = 'job-seeker',
   EMPLOYER = 'employer',
   ADMIN = 'admin',
 }
 
-export const roleArray = [Role.JOB_SEEKER, Role.EMPLOYER, Role.ADMIN] as const;
+// Enums for user status
+export enum UserStatus {
+  ACTIVE = 'active',
+  SUSPENDED = 'suspended',
+  INACTIVE = 'inactive',
+}
 
-// USERS TABLE
+// Enums for job listing status
+export enum JobListingStatus {
+  OPEN = 'open',
+  CLOSED = 'closed',
+  PENDING = 'pending',
+}
+
+// Enums for application status
+export enum ApplicationStatus {
+  SUBMITTED = 'submitted',
+  REVIEWED = 'reviewed',
+  REJECTED = 'rejected',
+}
+
+// Arrays for enums
+export const roles = [Role.JOB_SEEKER, Role.EMPLOYER, Role.ADMIN] as const;
+export const userStatuses = [UserStatus.ACTIVE, UserStatus.SUSPENDED, UserStatus.INACTIVE] as const;
+export const jobListingStatuses = [
+  JobListingStatus.OPEN,
+  JobListingStatus.CLOSED,
+  JobListingStatus.PENDING,
+] as const;
+export const applicationStatuses = [
+  ApplicationStatus.SUBMITTED,
+  ApplicationStatus.REVIEWED,
+  ApplicationStatus.REJECTED,
+] as const;
+
+// Users Table
 export const userTable = sqliteTable('users', {
-  id: text('id').primaryKey(), // Primary Key: Unique ID for each user (UUID)
-  name: text('name').notNull(), // User's full name
-  email: text('email').unique().notNull(), // User's email (must be unique)
-  password: text('password').notNull(), // User's hashed password
-  role: text('role').default(Role.JOB_SEEKER), // User's role ('job-seeker', 'employer', 'admin')
-  verified: text('verified').default('false'), // User verification status (true or false)
-
-  // User account status (active, suspended, etc.)
-  status: text('status').default('active'),
-
-  // Timestamps
-  createdAt: integer('created_at').notNull().default(Date.now()), // When the user was created
-  updatedAt: integer('updated_at').notNull().default(Date.now()), // Last time the user was updated
+  id: text('id').$defaultFn(uuidv4).primaryKey(), // Automatically generate the ID
+  name: text('name').notNull(),
+  email: text('email').unique().notNull(),
+  password: text('password').notNull(),
+  role: text('role').$type<Role>().default(Role.JOB_SEEKER),
+  verified: text('verified').default('false'),
+  status: text('status').$type<UserStatus>().default(UserStatus.ACTIVE),
+  createdAt: integer('created_at').notNull().default(Date.now()),
+  updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
 
-// JOB LISTINGS TABLE
+// Job Listings Table
 export const jobListingTable = sqliteTable('job_listings', {
-  id: text('id').primaryKey(), // Primary Key: Unique ID for each job listing (UUID)
-  title: text('title').notNull(), // Title of the job
-  description: text('description').notNull(), // Job description
-  company: text('company').notNull(), // Company name offering the job
-  location: text('location'), // Job location (optional)
-
-  // Foreign Key: References the user (employer) who posted the job
+  id: text('id').$defaultFn(uuidv4).primaryKey(), // Automatically generate the ID
+  title: text('title').notNull(),
+  description: text('description').notNull(),
+  company: text('company').notNull(),
+  location: text('location'),
   userId: text('user_id')
     .references(() => userTable.id)
     .notNull(),
-
-  // Status of the job listing (open, closed, etc.)
-  status: text('status').default('open'),
-
-  // Tracking who created and updated the job listing
+  salary: integer('salary').notNull(), // Updated salary to be a number
+  requirements: text('requirements').notNull(), // Added requirements field
+  // keywords: text('keywords').array(), // Added keywords field as an array
+  status: text('status').$type<JobListingStatus>().default(JobListingStatus.OPEN),
   createdBy: text('created_by')
     .references(() => userTable.id)
-    .notNull(), // Who created the listing
+    .notNull(),
   updatedBy: text('updated_by')
     .references(() => userTable.id)
-    .notNull(), // Who last updated the listing
-
-  // Timestamps
-  createdAt: integer('created_at').notNull().default(Date.now()), // When the listing was created
-  updatedAt: integer('updated_at').notNull().default(Date.now()), // Last time the listing was updated
+    .notNull(),
+  createdAt: integer('created_at').notNull().default(Date.now()),
+  updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
-
-// APPLICATIONS TABLE
+// Applications Table
 export const applicationTable = sqliteTable('applications', {
-  id: text('id').primaryKey(), // Primary Key: Unique ID for each application (UUID)
-  fullName: text('full_name').notNull(), // Applicant's full name
-  email: text('email').notNull().unique(), // Applicant's email address (must be unique)
-  phone: text('phone').notNull(), // Applicant's phone number
-  resume: text('resume'), // Resume (could be a file path or URL)
-  coverLetter: text('cover_letter'), // Optional cover letter
-
-  // Foreign Key: References the user who submitted the application
+  id: text('id').$defaultFn(uuidv4).primaryKey(), // Automatically generate the ID
+  fullName: text('full_name').notNull(),
+  email: text('email').notNull().unique(),
+  phone: text('phone').notNull(),
+  resume: text('resume'),
+  coverLetter: text('cover_letter'),
   userId: text('user_id')
     .references(() => userTable.id)
     .notNull(),
-
-  // Foreign Key: References the job listing the application is for
   jobListingId: text('job_listing_id')
     .references(() => jobListingTable.id)
     .notNull(),
-
-  // Status of the application (submitted, reviewed, rejected, etc.)
-  status: text('status').default('submitted'),
-
-  // Tracking who created and updated the application
+  status: text('status').$type<ApplicationStatus>().default(ApplicationStatus.SUBMITTED),
   createdBy: text('created_by')
     .references(() => userTable.id)
-    .notNull(), // Who created the application
+    .notNull(),
   updatedBy: text('updated_by')
     .references(() => userTable.id)
-    .notNull(), // Who last updated the application
-
-  // Timestamps
-  createdAt: integer('created_at').notNull().default(Date.now()), // When the application was created
-  updatedAt: integer('updated_at').notNull().default(Date.now()), // Last time the application was updated
+    .notNull(),
+  createdAt: integer('created_at').notNull().default(Date.now()),
+  updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
 
-// SESSIONS TABLE
+// Sessions Table
 export const sessionTable = sqliteTable('sessions', {
-  id: text('id').primaryKey(), // Primary Key: Unique ID for each session (UUID)
-
-  // Foreign Key: References the user who owns the session
+  id: text('id').primaryKey(), // Automatically generate the ID
   userId: text('user_id')
     .references(() => userTable.id)
     .notNull(),
-
-  // Session expiration timestamp
   expiresAt: integer('expires_at').notNull(),
-
-  // Timestamps
-  createdAt: integer('created_at').notNull().default(Date.now()), // When the session was created
-  updatedAt: integer('updated_at').notNull().default(Date.now()), // Last time the session was updated
+  createdAt: integer('created_at').notNull().default(Date.now()),
+  updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
 
 // Type Definitions for Type Inference
