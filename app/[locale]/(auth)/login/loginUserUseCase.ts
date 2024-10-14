@@ -4,7 +4,7 @@ import { err, ok, ResultAsync } from 'neverthrow';
 import { AuthRepository } from '@/domain/auth/AuthRepository';
 import { PasswordHashingError, SessionCreationError } from '@/lib/auth/types';
 
-import { UserRepository } from '../../../domain/user/UserRepository';
+import { UserRepository } from '../../../../domain/user/UserRepository';
 import { LoginUserInput } from './loginSchema';
 
 const ERROR_MESSAGES = {
@@ -31,7 +31,7 @@ export const loginUserUseCase = async (
   }
 
   const sessionResult = await ResultAsync.fromPromise(
-    authRepository.createSession(existingUserResult.value.id, { fresh: true }),
+    authRepository.createSession(existingUserResult.value.id!, { fresh: true }),
     () => new SessionCreationError(),
   );
 

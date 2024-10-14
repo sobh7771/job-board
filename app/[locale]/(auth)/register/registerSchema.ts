@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { roleArray } from '@/lib/drizzle/schema';
+import { roles } from '@/lib/drizzle/schema';
 
 export const registerSchema = z.object({
   email: z
@@ -16,7 +16,7 @@ export const registerSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter.')
     .regex(/[0-9]/, 'Password must contain at least one number.')
     .regex(/[@$!%*?&]/, 'Password must contain at least one special character.'),
-  role: z.enum(roleArray).optional(),
+  role: z.enum(roles).optional(),
 });
 
 export type RegisterUserInput = z.infer<typeof registerSchema>;

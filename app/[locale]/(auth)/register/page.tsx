@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
-import { roleArray } from '@/lib/drizzle/schema';
+import { roles } from '@/lib/drizzle/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { register } from './register';
@@ -53,7 +53,7 @@ export default function RegisterPage() {
   } = useForm<RegisterUserInput>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      role: roleArray[0],
+      role: roles[0],
     },
   });
 

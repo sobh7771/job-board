@@ -1,10 +1,12 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
 import { LuciaAuthRepository } from '@/infrastructure/auth/LuciaAuthRepository';
-import { UserRepositoryImpl } from '@/infrastructure/user/UserRepositoryImpl';
+import { DrizzleUserRepository } from '@/infrastructure/user/DrizzleUserRepository';
 import { actionClient } from '@/lib/safe-action';
+import { CacheTags } from '@/lib/utils';
 
 import { registerSchema } from './registerSchema';
 import { registerUserUseCase } from './registerUserUseCase';
@@ -18,7 +20,7 @@ const MESSAGES = {
 // Main registration action
 export const register = actionClient.schema(registerSchema).action(async ({ parsedInput }) => {
   const authRepository = new LuciaAuthRepository();
-  const userRepository = new UserRepositoryImpl();
+  const userRepository = new DrizzleUserRepository();
 
   // Attempt to register the user
   const registrationResult = await registerUserUseCase(parsedInput, userRepository, authRepository);
@@ -32,6 +34,7 @@ export const register = actionClient.schema(registerSchema).action(async ({ pars
   const sessionCookie = registrationResult.value;
 
   cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attrs);
+  revalidateTag(CacheTags.AUTHENTICATED_USER);
 
   return { success: MESSAGES.registrationSuccess };
 });

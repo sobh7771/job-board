@@ -1,0 +1,100 @@
+.w-md-editor {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+}
+
+.w-md-editor-toolbar {
+  background-color: hsl(var(--muted)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  border-top-left-radius: var(--radius) !important;
+  border-top-right-radius: var(--radius) !important;
+}
+
+.w-md-editor-toolbar ul > li > button {
+  color: hsl(var(--foreground)) !important;
+}
+
+.w-md-editor-toolbar ul > li > button:hover {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.w-md-editor-text {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.w-md-editor-preview {
+  background-color: hsl(var(--muted)) !important;
+  box-shadow: inset 1px 0 0 0 hsl(var(--border)) !important;
+}
+
+.w-md-editor-text-pre > code,
+.w-md-editor-text-input {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+
+.wmde-markdown {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.wmde-markdown-var {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--foreground)) !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+}
+
+/* Fullscreen mode */
+.w-md-editor-fullscreen {
+  background-color: hsl(var(--background)) !important;
+}
+
+.w-md-editor-fullscreen .w-md-editor-toolbar {
+  background-color: hsl(var(--muted)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+}
+
+.w-md-editor-fullscreen .w-md-editor-content {
+  height: calc(100% - 50px) !important;
+}
+
+/* Syntax highlighting */
+.wmde-markdown-color code[class*='language-'],
+.wmde-markdown-color pre[class*='language-'] {
+  color: hsl(var(--foreground)) !important;
+  background-color: hsl(var(--muted)) !important;
+}
+
+.wmde-markdown-color .token.comment,
+.wmde-markdown-color .token.prolog,
+.wmde-markdown-color .token.doctype,
+.wmde-markdown-color .token.cdata {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.wmde-markdown-color .token.punctuation {
+  color: hsl(var(--foreground)) !important;
+}
+
+.wmde-markdown-color .token.property,
+.wmde-markdown-color .token.tag,
+.wmde-markdown-color .token.boolean,
+.wmde-markdown-color .token.number,
+.wmde-markdown-color .token.constant,
+.wmde-markdown-color .token.symbol,
+.wmde-markdown-color .token.deleted {
+  color: hsl(var(--primary)) !important;
+}
+
+.wmde-markdown-color .token.selector,
+.wmde-markdown-color .token.attr-name,
+.wmde-markdown-color .token.string,
+.wmde-markdown-color .token.char,
+.wmde-markdown-color .token.builtin,
+.wmde-markdown-color .token.inserted {
+  color: hsl(var(--secondary)) !important;
+}

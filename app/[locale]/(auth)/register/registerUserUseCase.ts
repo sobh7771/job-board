@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
-import { generateIdFromEntropySize } from 'lucia';
 import { err, ok, ResultAsync } from 'neverthrow';
+import { v4 as uuidv4 } from 'uuid';
 
 import { AuthRepository } from '@/domain/auth/AuthRepository';
 import { PasswordHashingError, SessionCreationError } from '@/lib/auth/types';
 import { User } from '@/lib/drizzle/schema';
 
-import { UserRepository } from '../../../domain/user/UserRepository';
+import { UserRepository } from '../../../../domain/user/UserRepository';
 import { RegisterUserInput } from './registerSchema';
 
 // Main use case for registering a user
@@ -36,7 +36,7 @@ export const registerUserUseCase = async (
 
   // Create the user object
   const user: User = {
-    id: generateIdFromEntropySize(10),
+    id: uuidv4(),
     email: input.email,
     name: input.name,
     password: passwordHashResult.value,
@@ -51,7 +51,7 @@ export const registerUserUseCase = async (
 
   // Create a new session for the user
   const sessionResult = await ResultAsync.fromPromise(
-    authRepository.createSession(user.id, { fresh: true }),
+    authRepository.createSession(user.id!, { fresh: true }),
     () => new SessionCreationError(),
   );
 

@@ -1,10 +1,12 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
 import { LuciaAuthRepository } from '@/infrastructure/auth/LuciaAuthRepository';
 import { lucia } from '@/lib/auth/lucia';
 import { actionClient } from '@/lib/safe-action';
+import { CacheTags } from '@/lib/utils';
 
 import { logoutUseCase } from './logoutUseCase';
 
@@ -25,6 +27,7 @@ export const logout = actionClient.action(async () => {
   // Set the blank session cookie
   const sessionCookie = result.value;
   cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attrs);
+  revalidateTag(CacheTags.AUTHENTICATED_USER);
 
   return { success: 'You have been successfully logged out. Thank you for visiting!' };
 });
