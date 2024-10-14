@@ -25,7 +25,8 @@ export const lucia = new Lucia(adapter, {
   // Function to map database user attributes to application-specific attributes
   getUserAttributes(databaseUserAttributes: User) {
     return {
-      name: databaseUserAttributes.name, // Return the user's name
+      name: databaseUserAttributes.name,
+      role: databaseUserAttributes.role,
     };
   },
 });

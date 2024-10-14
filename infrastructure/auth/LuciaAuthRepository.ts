@@ -6,7 +6,6 @@ import {
   SessionCookie,
   SessionOptions,
   SessionValidationResult,
-  User,
 } from '../../domain/auth/AuthRepository';
 
 export class LuciaAuthRepository implements AuthRepository {
@@ -36,7 +35,8 @@ export class LuciaAuthRepository implements AuthRepository {
       attrs: blankSessionCookie.attributes,
     };
   }
-  validateSession(sessionId: string): Promise<SessionValidationResult> {
-    return lucia.validateSession(sessionId);
+  async validateSession(sessionId: string): Promise<SessionValidationResult> {
+    let result = (await lucia.validateSession(sessionId)) as unknown as SessionValidationResult;
+    return result;
   }
 }

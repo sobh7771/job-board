@@ -1,3 +1,5 @@
+import { Role } from '@/lib/drizzle/schema';
+
 export interface Session {
   /**
    * The ID of the session.
@@ -45,6 +47,11 @@ export interface User {
    * The name of the user.
    */
   name: string;
+
+  /**
+   * The role of the user.
+   */
+  role: Role;
 }
 
 /**
