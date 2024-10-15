@@ -7,20 +7,22 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { useUser } from '@/contexts/user-context';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
+import { Role } from '@/lib/drizzle/schema';
+import { cn } from '@/lib/utils';
 
 import { AuthButtons } from './AuthButtons';
+import { Badge } from './ui/badge';
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const t = useTranslations('rootLayout');
   const [menuOpen, setMenuOpen] = useState(false);
+  const user = useUser();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,6 +46,8 @@ export function Navbar() {
   const handleMenuClose = () => {
     setMenuOpen(false);
   };
+
+  console.log(user);
 
   return (
     <>
@@ -73,20 +77,41 @@ export function Navbar() {
                       {t('jobs')}
                     </Link>
                   </li>
-                  <li>
+                  <li className="relative">
                     <Link
-                      href="/employers"
-                      className="text-gray-600 hover:text-primary"
-                      onClick={handleMenuClose}>
+                      href={user?.role === Role.EMPLOYER ? '/employers' : '#'}
+                      className={cn('text-gray-600 hover:text-primary', {
+                        'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                      })}
+                      onClick={(e) => {
+                        if (!user || user?.role !== Role.EMPLOYER) {
+                          e.preventDefault(); // Disable the link for non-employers or non-logged-in users
+                        }
+                        handleMenuClose();
+                      }}>
                       {t('forEmployers')}
+                      {(!user || user?.role !== Role.EMPLOYER) && (
+                        <Badge variant="secondary">{t('forEmployers')}</Badge>
+                      )}
                     </Link>
                   </li>
+
                   <li>
                     <Link
-                      href="/jobs/new"
-                      className="text-gray-600 hover:text-primary"
-                      onClick={handleMenuClose}>
+                      href={user?.role === Role.EMPLOYER ? '/jobs/new' : '#'}
+                      className={cn('text-gray-600 hover:text-primary', {
+                        'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                      })}
+                      onClick={(e) => {
+                        if (!user || user?.role !== Role.EMPLOYER) {
+                          e.preventDefault(); // Disable the link for non-employers or non-logged-in users
+                        }
+                        handleMenuClose();
+                      }}>
                       {t('postJob')}
+                      {(!user || user?.role !== Role.EMPLOYER) && (
+                        <Badge variant="secondary">{t('forEmployers')}</Badge>
+                      )}
                     </Link>
                   </li>
                   <li>
@@ -135,24 +160,51 @@ export function Navbar() {
 
           {/* Links */}
           <nav className="flex gap-4">
-            <Link
-              href="/jobs"
-              className="text-gray-600 hover:text-primary"
-              onClick={handleMenuClose}>
-              {t('jobs')}
-            </Link>
-            <Link
-              href="/employers"
-              className="text-gray-600 hover:text-primary"
-              onClick={handleMenuClose}>
-              {t('forEmployers')}
-            </Link>
-            <Link
-              href="/jobs/new"
-              className="text-gray-600 hover:text-primary"
-              onClick={handleMenuClose}>
-              {t('postJob')}
-            </Link>
+            <li>
+              <Link
+                href="/jobs"
+                className="text-gray-600 hover:text-primary"
+                onClick={handleMenuClose}>
+                {t('jobs')}
+              </Link>
+            </li>
+            <li className="flex flex-col items-center">
+              <Link
+                href={user?.role === Role.EMPLOYER ? '/employers' : '#'}
+                className={cn('text-gray-600 hover:text-primary', {
+                  'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                })}
+                onClick={(e) => {
+                  if (!user || user?.role !== Role.EMPLOYER) {
+                    e.preventDefault();
+                  }
+                  handleMenuClose();
+                }}>
+                {t('forEmployers')}
+              </Link>
+              {(!user || user?.role !== Role.EMPLOYER) && (
+                <Badge variant="secondary">{t('forEmployers')}</Badge>
+              )}
+            </li>
+
+            <li className="flex flex-col items-center">
+              <Link
+                href={user?.role === Role.EMPLOYER ? '/jobs/new' : '#'}
+                className={cn('text-gray-600 hover:text-primary', {
+                  'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                })}
+                onClick={(e) => {
+                  if (!user || user?.role !== Role.EMPLOYER) {
+                    e.preventDefault();
+                  }
+                  handleMenuClose();
+                }}>
+                {t('postJob')}
+              </Link>
+              {(!user || user?.role !== Role.EMPLOYER) && (
+                <Badge variant="secondary">{t('forEmployers')}</Badge>
+              )}
+            </li>
           </nav>
 
           {/* Language and Theme Switch */}
