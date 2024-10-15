@@ -16,22 +16,28 @@ const MESSAGES = {
   loginFailure: 'Login failed. Please check your email and password.',
 };
 
-export const login = actionClient.schema(loginSchema).action(async ({ parsedInput }) => {
-  const authRepository = new LuciaAuthRepository();
-  const userRepository = new DrizzleUserRepository();
+export const login = actionClient
+  .schema(loginSchema)
+  .action(async ({ parsedInput }) => {
+    const authRepository = new LuciaAuthRepository();
+    const userRepository = new DrizzleUserRepository();
 
-  const loginResult = await loginUserUseCase(parsedInput, userRepository, authRepository);
+    const loginResult = await loginUserUseCase(
+      parsedInput,
+      userRepository,
+      authRepository
+    );
 
-  if (loginResult.isErr()) {
-    return {
-      error: loginResult.error.message || MESSAGES.loginFailure,
-    };
-  }
+    if (loginResult.isErr()) {
+      return {
+        error: loginResult.error.message || MESSAGES.loginFailure,
+      };
+    }
 
-  const sessionCookie = loginResult.value;
+    const sessionCookie = loginResult.value;
 
-  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attrs);
-  revalidateTag(CacheTags.AUTHENTICATED_USER);
+    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attrs);
+    revalidateTag(CacheTags.AUTHENTICATED_USER);
 
-  return { success: MESSAGES.loginSuccess };
-});
+    return { success: MESSAGES.loginSuccess };
+  });

@@ -6,17 +6,19 @@ import { Input } from '@/components/ui/input';
 import { Link, routing } from '@/i18n/routing';
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+  return routing.locales.map(locale => ({ locale }));
 }
 
 async function HeroSection() {
   const t = await getTranslations('home');
   return (
-    <section className="bg-gradient-to-r from-primary to-primary-foreground text-white py-20 ">
+    <section className="bg-gradient-to-r from-primary to-primary-foreground py-20 text-white ">
       <div className="container mx-auto px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6">{t('heroTitle')}</h1>
-        <p className="text-xl mb-8">{t('heroSubtitle')}</p>
-        <div className="max-w-2xl mx-auto flex flex-col md:flex-row gap-4">
+        <h1 className="mb-6 text-4xl font-bold md:text-5xl">
+          {t('heroTitle')}
+        </h1>
+        <p className="mb-8 text-xl">{t('heroSubtitle')}</p>
+        <div className="mx-auto flex max-w-2xl flex-col gap-4 md:flex-row">
           <Input
             type="text"
             placeholder={t('searchPlaceholder')}
@@ -36,28 +38,34 @@ async function WhyChooseSection() {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">{t('whyChooseTitle')}</h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <h2 className="mb-12 text-center text-3xl font-bold">
+          {t('whyChooseTitle')}
+        </h2>
+        <div className="grid gap-8 md:grid-cols-3">
           {[
             {
-              icon: <Briefcase className="mx-auto h-12 w-12 text-primary mb-4" />,
+              icon: (
+                <Briefcase className="mx-auto mb-4 h-12 w-12 text-primary" />
+              ),
               title: t('opportunityTitle'),
               description: t('opportunityDescription'),
             },
             {
-              icon: <Users className="mx-auto h-12 w-12 text-primary mb-4" />,
+              icon: <Users className="mx-auto mb-4 h-12 w-12 text-primary" />,
               title: t('employersTitle'),
               description: t('employersDescription'),
             },
             {
-              icon: <Building className="mx-auto h-12 w-12 text-primary mb-4" />,
+              icon: (
+                <Building className="mx-auto mb-4 h-12 w-12 text-primary" />
+              ),
               title: t('growthTitle'),
               description: t('growthDescription'),
             },
           ].map(({ icon, title, description }, index) => (
             <div className="text-center" key={index}>
               {icon}
-              <h3 className="text-xl font-semibold mb-2">{title}</h3>
+              <h3 className="mb-2 text-xl font-semibold">{title}</h3>
               <p className="text-gray-600">{description}</p>
             </div>
           ))}
@@ -72,7 +80,9 @@ async function NextStepSection() {
   return (
     <section className="bg-muted py-20 transition-colors">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-8 text-foreground">{t('nextStepTitle')}</h2>
+        <h2 className="mb-8 text-3xl font-bold text-foreground">
+          {t('nextStepTitle')}
+        </h2>
         <Button asChild size="lg">
           <Link href="/register">
             {t('getStartedButton')} <ArrowRight className="ml-2 h-4 w-4" />
@@ -88,8 +98,10 @@ async function FeaturedCategoriesSection() {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">{t('featuredCategoriesTitle')}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <h2 className="mb-12 text-center text-3xl font-bold">
+          {t('featuredCategoriesTitle')}
+        </h2>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {[
             'Technology',
             'Healthcare',
@@ -99,7 +111,7 @@ async function FeaturedCategoriesSection() {
             'Design',
             'Sales',
             'Engineering',
-          ].map((category) => (
+          ].map(category => (
             <Button key={category} variant="outline" className="w-full">
               {category}
             </Button>
@@ -115,8 +127,10 @@ async function HowItWorksSection() {
   return (
     <section className="bg-muted py-20">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">{t('howItWorksTitle')}</h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <h2 className="mb-12 text-center text-3xl font-bold">
+          {t('howItWorksTitle')}
+        </h2>
+        <div className="grid gap-8 md:grid-cols-3">
           {[
             {
               step: 1,
@@ -135,10 +149,10 @@ async function HowItWorksSection() {
             },
           ].map(({ step, title, description }) => (
             <div className="text-center" key={step}>
-              <div className="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">
                 {step}
               </div>
-              <h3 className="text-xl font-semibold mb-2">{title}</h3>
+              <h3 className="mb-2 text-xl font-semibold">{title}</h3>
               <p className="text-gray-600">{description}</p>
             </div>
           ))}
@@ -154,7 +168,7 @@ export default async function HomePage({
   unstable_setRequestLocale(locale);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <HeroSection />
       <WhyChooseSection />
       <NextStepSection />

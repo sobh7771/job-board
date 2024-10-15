@@ -13,7 +13,7 @@ import { RegisterUserInput } from './registerSchema';
 export const registerUserUseCase = async (
   input: RegisterUserInput,
   userRepository: UserRepository,
-  authRepository: AuthRepository,
+  authRepository: AuthRepository
 ) => {
   // Check for existing user
   const existingUserResult = await userRepository.findByEmail(input.email);
@@ -28,7 +28,7 @@ export const registerUserUseCase = async (
   // Hash the password
   const passwordHashResult = await ResultAsync.fromPromise(
     bcrypt.hash(input.password, await bcrypt.genSalt()),
-    () => new PasswordHashingError(),
+    () => new PasswordHashingError()
   );
   if (passwordHashResult.isErr()) {
     return err(new PasswordHashingError());
@@ -52,7 +52,7 @@ export const registerUserUseCase = async (
   // Create a new session for the user
   const sessionResult = await ResultAsync.fromPromise(
     authRepository.createSession(user.id!, { fresh: true }),
-    () => new SessionCreationError(),
+    () => new SessionCreationError()
   );
 
   if (sessionResult.isErr()) {
@@ -60,7 +60,9 @@ export const registerUserUseCase = async (
   }
 
   // Create session cookie
-  const sessionCookie = authRepository.createSessionCookie(sessionResult.value.id);
+  const sessionCookie = authRepository.createSessionCookie(
+    sessionResult.value.id
+  );
 
   return ok(sessionCookie);
 };

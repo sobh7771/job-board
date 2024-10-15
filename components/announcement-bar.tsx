@@ -22,7 +22,7 @@ const AUTO_SWIPE_INTERVAL = 5000; // 5 seconds
 
 export function AnnouncementBar() {
   return (
-    <div className="bg-primary text-primary-foreground py-2 transition-all relative">
+    <div className="relative bg-primary py-2 text-primary-foreground transition-all">
       <div className="container mx-auto px-4">
         <Carousel
           opts={{ loop: true, align: 'center' }}
@@ -30,11 +30,14 @@ export function AnnouncementBar() {
             Autoplay({
               delay: AUTO_SWIPE_INTERVAL,
             }),
-          ]}>
+          ]}
+        >
           <CarouselContent>
             {announcements.map((announcement, index) => (
               <CarouselItem key={index} className="flex justify-center">
-                <p className="text-sm font-medium text-center">{announcement}</p>
+                <p className="text-center text-sm font-medium">
+                  {announcement}
+                </p>
               </CarouselItem>
             ))}
           </CarouselContent>

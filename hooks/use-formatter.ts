@@ -37,7 +37,7 @@ type FormatterType = keyof FormatFunctions;
  */
 export const useFormatter = <T extends FormatterType>(
   type: T,
-  options?: T extends 'date' ? Intl.DateTimeFormatOptions : undefined,
+  options?: T extends 'date' ? Intl.DateTimeFormatOptions : undefined
 ): T extends FormatterType ? FormatFunctions[T] : FormatFunctions => {
   const locale = useLocale(); // Get the user's locale
 
@@ -45,7 +45,9 @@ export const useFormatter = <T extends FormatterType>(
   const formatFunctions: FormatFunctions = {
     currency: (value: number) => formatters.currency(locale).format(value),
     date: (value: Date | number) =>
-      formatters.date(locale, { dateStyle: 'long', ...options }).format(new Date(value)), // Convert timestamp to Date
+      formatters
+        .date(locale, { dateStyle: 'long', ...options })
+        .format(new Date(value)), // Convert timestamp to Date
     number: (value: number) => formatters.number(locale).format(value),
   };
   // @ts-ignore

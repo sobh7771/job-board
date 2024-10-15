@@ -6,7 +6,10 @@ const withNextIntl = createNextIntlPlugin('i18n/request.ts');
 const nextConfig = {
   logging: { fetches: { fullUrl: true } },
   images: {
-    remotePatterns: [{ hostname: 'via.placeholder.com' }, { hostname: 'images.unsplash.com' }],
+    remotePatterns: [
+      { hostname: 'via.placeholder.com' },
+      { hostname: 'images.unsplash.com' },
+    ],
   },
 };
 

@@ -18,7 +18,7 @@ export const jobListingSchema = z.object({
     .regex(/^\d+$/, {
       message: 'Salary must be a number.',
     })
-    .transform((s) => Number(s)),
+    .transform(s => Number(s)),
   description: z.string().min(50, {
     message: 'Job description must be at least 50 characters.',
   }),

@@ -23,7 +23,8 @@ const cairo = Cairo({
 
 export const metadata = {
   title: 'JobBoard - Find Your Dream Job',
-  description: 'Connect with top employers and find your next career opportunity.',
+  description:
+    'Connect with top employers and find your next career opportunity.',
 };
 
 // export function generateStaticParams() {
@@ -44,13 +45,15 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir}>
       <body className={`${inter.className} ${cairo.className}`}>
-        <div className="flex flex-col min-h-screen">
+        <div className="flex min-h-screen flex-col">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <NextIntlClientProvider messages={messages}>
               <UserContextProvider value={await getCachedAuthenticatedUser()}>
                 <AnnouncementBar />
                 <Navbar />
-                <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
+                <main className="container mx-auto flex-grow px-4 py-8">
+                  {children}
+                </main>
               </UserContextProvider>
             </NextIntlClientProvider>
             <Footer />

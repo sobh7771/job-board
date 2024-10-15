@@ -29,14 +29,14 @@ export function AuthButtons() {
         return;
       }
 
-      const errorMessage = res?.data?.error || res?.serverError || 'An unknown error occurred.';
+      const errorMessage =
+        res?.data?.error || res?.serverError || 'An unknown error occurred.';
       toast({
         title: 'Logout Error',
         description: errorMessage,
         variant: 'destructive',
       });
-    } catch (error) {
-      console.error('Logout failed:', error);
+    } catch {
       toast({
         title: 'Logout Failed',
         description: 'An unexpected error occurred. Please try again.',
@@ -49,13 +49,20 @@ export function AuthButtons() {
     <div className="relative">
       <div
         className={cn(
-          'transition-all duration-500  flex gap-4',
-          user ? 'animate-in fade-in-50 slide-in-from-left-50' : 'animate-out fade-out-50',
-        )}>
+          'flex gap-4  transition-all duration-500',
+          user
+            ? 'slide-in-from-left-50 animate-in fade-in-50'
+            : 'animate-out fade-out-50'
+        )}
+      >
         {user ? (
           <>
             <UserName />
-            <Button variant="outline" onClick={handleLogout} aria-label="Logout">
+            <Button
+              variant="outline"
+              onClick={handleLogout}
+              aria-label="Logout"
+            >
               {t('logout')}
             </Button>
           </>

@@ -7,7 +7,7 @@ export default async function PostJobPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">{t('title')}</h1>
+      <h1 className="mb-6 text-3xl font-bold">{t('title')}</h1>
       <PostJobForm />
     </div>
   );

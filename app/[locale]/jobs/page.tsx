@@ -15,7 +15,8 @@ const jobs: JobListingWithUser[] = [
     company: 'Tech Co',
     location: 'San Francisco, CA',
     salary: 120000,
-    description: 'We are seeking a talented Software Engineer to join our team.',
+    description:
+      'We are seeking a talented Software Engineer to join our team.',
     requirements: "Bachelor's degree in Computer Science or related field.",
     createdAt: Date.now(),
     user: {
@@ -75,7 +76,8 @@ const jobs: JobListingWithUser[] = [
     company: 'Cloud Solutions',
     location: 'Austin, TX',
     salary: 110000,
-    description: 'Looking for a skilled DevOps Engineer to manage infrastructure.',
+    description:
+      'Looking for a skilled DevOps Engineer to manage infrastructure.',
     requirements: 'Experience with AWS and CI/CD tools.',
     createdAt: Date.now(),
     user: {
@@ -89,7 +91,7 @@ const JobListingsPage: FC = async () => {
   await sleep(2000);
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Jobs</h1>
+      <h1 className="mb-6 text-2xl font-bold">Jobs</h1>
       <JobList jobs={jobs} />
     </div>
   );
@@ -97,7 +99,7 @@ const JobListingsPage: FC = async () => {
 
 const JobList: FC<{ jobs: JobListingWithUser[] }> = ({ jobs }) => (
   <div className="space-y-4">
-    {jobs.map((job) => (
+    {jobs.map(job => (
       <JobCard key={job.id} job={job} />
     ))}
   </div>
@@ -109,22 +111,24 @@ const JobCard: FC<{ job: JobListingWithUser }> = ({ job }) => {
   const formatDate = useFormatter('date'); // Use the date formatter
 
   return (
-    <div className="border p-4 rounded-lg">
+    <div className="rounded-lg border p-4">
       <h2 className="text-xl font-semibold">{job.title}</h2>
       <p className="text-gray-600">{job.company}</p>
       <p className="text-gray-600">{job.location}</p>
       <p className="text-gray-600">${formatCurrency(job.salary!)}</p>
-      <div className="flex items-center mt-2">
+      <div className="mt-2 flex items-center">
         <Image
           src={job.user.profilePic}
           alt={job.user.name!}
           width={32}
           height={32}
-          className="rounded-full mr-2"
+          className="mr-2 rounded-full"
         />
         <div>
           <p className="text-gray-600">{job.user.name}</p>
-          <p className="text-gray-500 text-sm">Posted on {formatDate(job.createdAt!)}</p>
+          <p className="text-sm text-gray-500">
+            Posted on {formatDate(job.createdAt!)}
+          </p>
         </div>
       </div>
       <Button asChild className="mt-2">

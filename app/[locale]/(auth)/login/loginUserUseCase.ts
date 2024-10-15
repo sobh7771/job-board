@@ -14,7 +14,7 @@ const ERROR_MESSAGES = {
 export const loginUserUseCase = async (
   input: LoginUserInput,
   userRepository: UserRepository,
-  authRepository: AuthRepository,
+  authRepository: AuthRepository
 ) => {
   const existingUserResult = await userRepository.findByEmail(input.email);
   if (existingUserResult.isErr() || !existingUserResult.value) {
@@ -23,7 +23,7 @@ export const loginUserUseCase = async (
 
   const passwordMatchResult = await ResultAsync.fromPromise(
     bcrypt.compare(input.password, existingUserResult.value.password),
-    () => new PasswordHashingError(),
+    () => new PasswordHashingError()
   );
 
   if (passwordMatchResult.isErr() || !passwordMatchResult.value) {
@@ -32,14 +32,16 @@ export const loginUserUseCase = async (
 
   const sessionResult = await ResultAsync.fromPromise(
     authRepository.createSession(existingUserResult.value.id!, { fresh: true }),
-    () => new SessionCreationError(),
+    () => new SessionCreationError()
   );
 
   if (sessionResult.isErr()) {
     return err(new SessionCreationError());
   }
 
-  const sessionCookie = authRepository.createSessionCookie(sessionResult.value.id);
+  const sessionCookie = authRepository.createSessionCookie(
+    sessionResult.value.id
+  );
 
   return ok(sessionCookie);
 };

@@ -20,7 +20,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         <Input id={id} type={type} required={required} ref={ref} {...field} />
       </div>
     );
-  },
+  }
 );
 
 TextInput.displayName = 'TextInput';

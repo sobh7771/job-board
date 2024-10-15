@@ -9,27 +9,43 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { createJobListingAction } from '@/app/[locale]/jobs/new/createJobListingAction';
-import { JobListingInput, jobListingSchema } from '@/app/[locale]/jobs/new/jobListingSchema';
+import {
+  JobListingInput,
+  jobListingSchema,
+} from '@/app/[locale]/jobs/new/jobListingSchema';
 import { Button } from '@/components/ui/button';
 import {
-    Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
-    Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from '@/i18n/routing';
 import { AppRoutes } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Skeleton } from './ui/skeleton';
 
-const MDEditor = dynamic(() => import('@uiw/react-md-editor').then((mod) => mod.default), {
-  ssr: false,
-  loading: () => <Skeleton className="h-[200px]" />,
-});
+const MDEditor = dynamic(
+  () => import('@uiw/react-md-editor').then(mod => mod.default),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-[200px]" />,
+  }
+);
 
 const defaultJobListing: JobListingInput = {
   title: '',
@@ -43,13 +59,13 @@ const defaultJobListing: JobListingInput = {
 };
 
 const loadKeywords = async (inputValue: string) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 1000));
   return [
     { value: 'react', label: 'React' },
     { value: 'nodejs', label: 'Node.js' },
     { value: 'typescript', label: 'TypeScript' },
     { value: 'javascript', label: 'JavaScript' },
-  ].filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()));
+  ].filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()));
 };
 
 export function PostJobForm() {
@@ -62,7 +78,7 @@ export function PostJobForm() {
   const router = useRouter();
 
   const { execute } = useAction(createJobListingAction, {
-    onError: (error) => {
+    onError: error => {
       toast({
         title: t('error'),
         description: error.error.serverError || t('unknownError'),
@@ -160,10 +176,18 @@ export function PostJobForm() {
                 </FormControl>
                 <SelectContent>
                   {/* Uncomment the following lines when ready to use */}
-                  <SelectItem value="full-time">{t('jobTypeOptions.fullTime')}</SelectItem>
-                  <SelectItem value="part-time">{t('jobTypeOptions.partTime')}</SelectItem>
-                  <SelectItem value="contract">{t('jobTypeOptions.contract')}</SelectItem>
-                  <SelectItem value="internship">{t('jobTypeOptions.internship')}</SelectItem>
+                  <SelectItem value="full-time">
+                    {t('jobTypeOptions.fullTime')}
+                  </SelectItem>
+                  <SelectItem value="part-time">
+                    {t('jobTypeOptions.partTime')}
+                  </SelectItem>
+                  <SelectItem value="contract">
+                    {t('jobTypeOptions.contract')}
+                  </SelectItem>
+                  <SelectItem value="internship">
+                    {t('jobTypeOptions.internship')}
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -178,7 +202,11 @@ export function PostJobForm() {
             <FormItem>
               <FormLabel>{t('salary')}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={t('salaryPlaceholder')} {...field} />
+                <Input
+                  type="number"
+                  placeholder={t('salaryPlaceholder')}
+                  {...field}
+                />
               </FormControl>
               <FormDescription>{t('salaryDescription')}</FormDescription>
               <FormMessage />
@@ -200,7 +228,9 @@ export function PostJobForm() {
                   height={200}
                 />
               </FormControl>
-              <FormDescription>{t('jobDescriptionDescription')}</FormDescription>
+              <FormDescription>
+                {t('jobDescriptionDescription')}
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -220,7 +250,9 @@ export function PostJobForm() {
                   height={200}
                 />
               </FormControl>
-              <FormDescription>{t('jobRequirementsDescription')}</FormDescription>
+              <FormDescription>
+                {t('jobRequirementsDescription')}
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

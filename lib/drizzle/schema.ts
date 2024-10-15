@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -31,7 +32,11 @@ export enum ApplicationStatus {
 
 // Arrays for enums
 export const roles = [Role.JOB_SEEKER, Role.EMPLOYER, Role.ADMIN] as const;
-export const userStatuses = [UserStatus.ACTIVE, UserStatus.SUSPENDED, UserStatus.INACTIVE] as const;
+export const userStatuses = [
+  UserStatus.ACTIVE,
+  UserStatus.SUSPENDED,
+  UserStatus.INACTIVE,
+] as const;
 export const jobListingStatuses = [
   JobListingStatus.OPEN,
   JobListingStatus.CLOSED,
@@ -69,7 +74,9 @@ export const jobListingTable = sqliteTable('job_listings', {
   salary: integer('salary').notNull(), // Updated salary to be a number
   requirements: text('requirements').notNull(), // Added requirements field
   // keywords: text('keywords').array(), // Added keywords field as an array
-  status: text('status').$type<JobListingStatus>().default(JobListingStatus.OPEN),
+  status: text('status')
+    .$type<JobListingStatus>()
+    .default(JobListingStatus.OPEN),
   createdBy: text('created_by')
     .references(() => userTable.id)
     .notNull(),
@@ -93,7 +100,9 @@ export const applicationTable = sqliteTable('applications', {
   jobListingId: text('job_listing_id')
     .references(() => jobListingTable.id)
     .notNull(),
-  status: text('status').$type<ApplicationStatus>().default(ApplicationStatus.SUBMITTED),
+  status: text('status')
+    .$type<ApplicationStatus>()
+    .default(ApplicationStatus.SUBMITTED),
   createdBy: text('created_by')
     .references(() => userTable.id)
     .notNull(),

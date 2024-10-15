@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -22,7 +23,7 @@ export enum HttpStatusCodes {
   INTERNAL_SERVER_ERROR = 500,
 }
 export function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export enum CacheTags {
@@ -44,7 +45,10 @@ export class AppRoutes {
   static Applications = '/employer/applications';
   static NotFound = '/404';
 
-  static getRoute(route: keyof typeof AppRoutes, params?: Record<string, any>): string {
+  static getRoute(
+    route: keyof typeof AppRoutes,
+    params?: Record<string, any>
+  ): string {
     const routePath = AppRoutes[route];
 
     if (typeof routePath === 'function' && params) {

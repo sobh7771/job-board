@@ -18,19 +18,17 @@ class UnauthorizedError extends Error {
 }
 export const action = createSafeActionClient({
   handleServerError(err: unknown) {
-    let userFriendlyMessage = 'Oops! Something went wrong. Please try again later.';
+    let userFriendlyMessage =
+      'Oops! Something went wrong. Please try again later.';
 
     if (err instanceof InvalidSessionError) {
-      userFriendlyMessage = 'Your session has expired. Please log in again to continue.';
+      userFriendlyMessage =
+        'Your session has expired. Please log in again to continue.';
     } else if (err instanceof UnauthorizedError) {
       userFriendlyMessage =
         "You don't have permission to access this part of the application. Please contact support if you believe this is an error.";
     }
 
-    // Log the original error for debugging
-    // console.error('Error:', err);
-
-    // Return or display the user-friendly message
     return userFriendlyMessage;
   },
 });
@@ -43,7 +41,9 @@ export const authorized = (requiredRoles: Role[]) => {
       throw new InvalidSessionError();
     }
 
-    const hasRequiredRole = requiredRoles.some((role) => user.role.includes(role));
+    const hasRequiredRole = requiredRoles.some(role =>
+      user.role.includes(role)
+    );
 
     if (!hasRequiredRole) {
       throw new UnauthorizedError();

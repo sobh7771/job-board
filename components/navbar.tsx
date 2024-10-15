@@ -7,7 +7,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
-    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUser } from '@/contexts/user-context';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
@@ -28,7 +31,10 @@ export function Navbar() {
   useEffect(() => {
     // Function to handle clicks outside of the mobile menu
     const handleClickOutside = (event: MouseEvent) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
+      ) {
         setMenuOpen(false);
       }
     };
@@ -47,33 +53,43 @@ export function Navbar() {
     setMenuOpen(false);
   };
 
-  console.log(user);
-
   return (
     <>
       {/* Mobile Navbar */}
-      <header className="bg-white border-b md:hidden">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <header className="border-b bg-white md:hidden">
+        <div className="container mx-auto flex items-center justify-between px-4 py-4">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-primary" onClick={handleMenuClose}>
+          <Link
+            href="/"
+            className="text-2xl font-bold text-primary"
+            onClick={handleMenuClose}
+          >
             {t('siteTitle')}
           </Link>
 
           {/* Hamburger Menu */}
-          <Button variant="outline" size="icon" onClick={() => setMenuOpen(!menuOpen)}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             <Menu className="h-6 w-6" />
           </Button>
 
           {/* Mobile Menu */}
           {menuOpen && (
-            <div ref={mobileMenuRef} className="absolute top-16 left-0 w-full bg-white shadow-lg">
+            <div
+              ref={mobileMenuRef}
+              className="absolute left-0 top-16 w-full bg-white shadow-lg"
+            >
               <nav>
                 <ul className="flex flex-col gap-4 px-4 py-2">
                   <li>
                     <Link
                       href="/jobs"
                       className="text-gray-600 hover:text-primary"
-                      onClick={handleMenuClose}>
+                      onClick={handleMenuClose}
+                    >
                       {t('jobs')}
                     </Link>
                   </li>
@@ -81,14 +97,16 @@ export function Navbar() {
                     <Link
                       href={user?.role === Role.EMPLOYER ? '/employers' : '#'}
                       className={cn('text-gray-600 hover:text-primary', {
-                        'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                        'pointer-events-none opacity-50':
+                          !user || user.role !== Role.EMPLOYER,
                       })}
-                      onClick={(e) => {
+                      onClick={e => {
                         if (!user || user?.role !== Role.EMPLOYER) {
                           e.preventDefault(); // Disable the link for non-employers or non-logged-in users
                         }
                         handleMenuClose();
-                      }}>
+                      }}
+                    >
                       {t('forEmployers')}
                       {(!user || user?.role !== Role.EMPLOYER) && (
                         <Badge variant="secondary">{t('forEmployers')}</Badge>
@@ -100,14 +118,16 @@ export function Navbar() {
                     <Link
                       href={user?.role === Role.EMPLOYER ? '/jobs/new' : '#'}
                       className={cn('text-gray-600 hover:text-primary', {
-                        'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                        'pointer-events-none opacity-50':
+                          !user || user.role !== Role.EMPLOYER,
                       })}
-                      onClick={(e) => {
+                      onClick={e => {
                         if (!user || user?.role !== Role.EMPLOYER) {
                           e.preventDefault(); // Disable the link for non-employers or non-logged-in users
                         }
                         handleMenuClose();
-                      }}>
+                      }}
+                    >
                       {t('postJob')}
                       {(!user || user?.role !== Role.EMPLOYER) && (
                         <Badge variant="secondary">{t('forEmployers')}</Badge>
@@ -125,13 +145,15 @@ export function Navbar() {
                         <DropdownMenuItem
                           onClick={() => {
                             router.push(pathname, { locale: 'en' });
-                          }}>
+                          }}
+                        >
                           English
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
                             router.push(pathname, { locale: 'ar' });
-                          }}>
+                          }}
+                        >
                           العربية
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -151,10 +173,14 @@ export function Navbar() {
       </header>
 
       {/* Desktop Navbar */}
-      <header className="bg-white border-b hidden md:block">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <header className="hidden border-b bg-white md:block">
+        <div className="container mx-auto flex items-center justify-between px-4 py-4">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-primary" onClick={handleMenuClose}>
+          <Link
+            href="/"
+            className="text-2xl font-bold text-primary"
+            onClick={handleMenuClose}
+          >
             {t('siteTitle')}
           </Link>
 
@@ -164,7 +190,8 @@ export function Navbar() {
               <Link
                 href="/jobs"
                 className="text-gray-600 hover:text-primary"
-                onClick={handleMenuClose}>
+                onClick={handleMenuClose}
+              >
                 {t('jobs')}
               </Link>
             </li>
@@ -172,14 +199,16 @@ export function Navbar() {
               <Link
                 href={user?.role === Role.EMPLOYER ? '/employers' : '#'}
                 className={cn('text-gray-600 hover:text-primary', {
-                  'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                  'pointer-events-none opacity-50':
+                    !user || user.role !== Role.EMPLOYER,
                 })}
-                onClick={(e) => {
+                onClick={e => {
                   if (!user || user?.role !== Role.EMPLOYER) {
                     e.preventDefault();
                   }
                   handleMenuClose();
-                }}>
+                }}
+              >
                 {t('forEmployers')}
               </Link>
               {(!user || user?.role !== Role.EMPLOYER) && (
@@ -191,14 +220,16 @@ export function Navbar() {
               <Link
                 href={user?.role === Role.EMPLOYER ? '/jobs/new' : '#'}
                 className={cn('text-gray-600 hover:text-primary', {
-                  'pointer-events-none opacity-50': !user || user.role !== Role.EMPLOYER,
+                  'pointer-events-none opacity-50':
+                    !user || user.role !== Role.EMPLOYER,
                 })}
-                onClick={(e) => {
+                onClick={e => {
                   if (!user || user?.role !== Role.EMPLOYER) {
                     e.preventDefault();
                   }
                   handleMenuClose();
-                }}>
+                }}
+              >
                 {t('postJob')}
               </Link>
               {(!user || user?.role !== Role.EMPLOYER) && (
@@ -219,13 +250,15 @@ export function Navbar() {
                 <DropdownMenuItem
                   onClick={() => {
                     router.push(pathname, { locale: 'en' });
-                  }}>
+                  }}
+                >
                   English
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
                     router.push(pathname, { locale: 'ar' });
-                  }}>
+                  }}
+                >
                   العربية
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -260,7 +293,11 @@ const ThemeToggleButton = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <Button variant="outline" size="icon" onClick={toggleTheme}>
-      {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {theme === 'dark' ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
     </Button>
   );
 };

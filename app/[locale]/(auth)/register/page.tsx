@@ -4,13 +4,13 @@ import { useAction } from 'next-safe-action/hooks';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '@/components/text-input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { roles } from '@/lib/drizzle/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { register } from './register';
 import { registerSchema, RegisterUserInput } from './registerSchema';
@@ -25,7 +25,8 @@ export default function RegisterPage() {
         toast({
           variant: 'destructive',
           title: 'Registration failed',
-          description: data.data.error || 'An error occurred during registration.',
+          description:
+            data.data.error || 'An error occurred during registration.',
         });
         return;
       }
@@ -42,7 +43,8 @@ export default function RegisterPage() {
       toast({
         variant: 'destructive',
         title: 'Server Error',
-        description: 'An error occurred while processing your request. Please try again later.',
+        description:
+          'An error occurred while processing your request. Please try again later.',
       });
     },
   });
@@ -62,8 +64,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Register</h1>
+    <div className="mx-auto max-w-md">
+      <h1 className="mb-6 text-2xl font-bold">Register</h1>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="role"
@@ -86,14 +88,18 @@ export default function RegisterPage() {
         <Controller
           name="name"
           control={control}
-          render={({ field }) => <TextInput {...field} id="name" label="Name" />}
+          render={({ field }) => (
+            <TextInput {...field} id="name" label="Name" />
+          )}
         />
         {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
         <Controller
           name="email"
           control={control}
-          render={({ field }) => <TextInput {...field} id="email" label="Email" />}
+          render={({ field }) => (
+            <TextInput {...field} id="email" label="Email" />
+          )}
         />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
@@ -101,10 +107,17 @@ export default function RegisterPage() {
           name="password"
           control={control}
           render={({ field }) => (
-            <TextInput {...field} id="password" label="Password" type="password" />
+            <TextInput
+              {...field}
+              id="password"
+              label="Password"
+              type="password"
+            />
           )}
         />
-        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="text-red-500">{errors.password.message}</p>
+        )}
 
         <Button type="submit" className="w-full" disabled={isPending}>
           Register

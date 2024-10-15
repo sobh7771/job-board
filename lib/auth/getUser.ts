@@ -15,8 +15,7 @@ export const getUser = async () => {
   try {
     const user = await getUserUseCase(sessionId, authRepository);
     return user;
-  } catch (error) {
-    console.error('Failed to retrieve user:', error);
+  } catch {
     return null;
   }
 };

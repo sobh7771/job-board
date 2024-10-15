@@ -24,14 +24,18 @@ export interface JobListingRepository {
    * @param filter - The filter object to apply (e.g., userId, status, title).
    * @returns A promise that resolves to a Result containing a single JobListing or null if not found, and a JobListingFetchError on failure.
    */
-  find(filter: JobListingFilter): Promise<Result<JobListing | null, JobListingFetchError>>;
+  find(
+    filter: JobListingFilter
+  ): Promise<Result<JobListing | null, JobListingFetchError>>;
 
   /**
    * Finds multiple job listings based on flexible filter criteria.
    * @param filter - The filter object to apply (e.g., userId, status, title).
    * @returns A promise that resolves to a Result containing an array of JobListing or an empty array if none found, and a JobListingFetchError on failure.
    */
-  findMany(filter: JobListingFilter): Promise<Result<JobListing[], JobListingFetchError>>;
+  findMany(
+    filter: JobListingFilter
+  ): Promise<Result<JobListing[], JobListingFetchError>>;
 
   /**
    * Saves a job listing to the repository.
@@ -45,7 +49,9 @@ export interface JobListingRepository {
    * @param filter - The filter object to apply (e.g., userId, status, title).
    * @returns A promise that resolves to the count of matching job listings.
    */
-  count(filter: JobListingFilter): Promise<Result<number, JobListingFetchError>>;
+  count(
+    filter: JobListingFilter
+  ): Promise<Result<number, JobListingFetchError>>;
 }
 
 export { type JobListingFilter };

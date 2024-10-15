@@ -29,5 +29,7 @@ export const logout = actionClient.action(async () => {
   cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attrs);
   revalidateTag(CacheTags.AUTHENTICATED_USER);
 
-  return { success: 'You have been successfully logged out. Thank you for visiting!' };
+  return {
+    success: 'You have been successfully logged out. Thank you for visiting!',
+  };
 });

@@ -60,7 +60,7 @@
 
 /* Styles for react-select */
 .react-select-container .react-select__control {
-  @apply bg-background border-input;
+  @apply border-input bg-background;
 }
 
 .react-select-container .react-select__control:hover {
@@ -72,7 +72,7 @@
 }
 
 .react-select-container .react-select__menu {
-  @apply bg-background border border-input;
+  @apply border border-input bg-background;
 }
 
 .react-select-container .react-select__option {
@@ -115,7 +115,7 @@
 }
 
 .w-md-editor-toolbar {
-  @apply bg-background border-b border-input;
+  @apply border-b border-input bg-background;
 }
 
 .w-md-editor-toolbar ul > li > button {

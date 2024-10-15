@@ -9,7 +9,10 @@ import {
 } from '../../domain/auth/AuthRepository';
 
 export class LuciaAuthRepository implements AuthRepository {
-  async createSession(userId: string, options: SessionOptions): Promise<Session> {
+  async createSession(
+    userId: string,
+    options: SessionOptions
+  ): Promise<Session> {
     const { id, fresh } = await lucia.createSession(userId, options);
     return { id, userId, fresh };
   }
@@ -36,7 +39,9 @@ export class LuciaAuthRepository implements AuthRepository {
     };
   }
   async validateSession(sessionId: string): Promise<SessionValidationResult> {
-    let result = (await lucia.validateSession(sessionId)) as unknown as SessionValidationResult;
+    let result = (await lucia.validateSession(
+      sessionId
+    )) as unknown as SessionValidationResult;
     return result;
   }
 }

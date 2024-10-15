@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 
 import { BackButton } from '@/components/back-button';
@@ -34,7 +35,7 @@ function JobDetails() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="mx-auto max-w-2xl">
       <JobHeader
         title={jobListingWithUser.title}
         company={jobListingWithUser.company}
@@ -65,7 +66,10 @@ const JobHeader = ({
   salary,
   user,
   createdAt,
-}: Pick<JobListingWithUser, 'title' | 'company' | 'location' | 'salary' | 'createdAt'> & {
+}: Pick<
+  JobListingWithUser,
+  'title' | 'company' | 'location' | 'salary' | 'createdAt'
+> & {
   user: JobListingWithUser['user'];
 }) => {
   const formatCurrency = useFormatter('currency');
@@ -73,21 +77,25 @@ const JobHeader = ({
 
   return (
     <div className="mb-6">
-      <h1 className="text-3xl font-bold mb-4">{title}</h1>
+      <h1 className="mb-4 text-3xl font-bold">{title}</h1>
       <p className="text-xl text-gray-600">{company}</p>
       <p className="text-gray-600">{location}</p>
       <p className="text-gray-600">{formatCurrency(salary!)}</p>
 
       {/* User Profile Section */}
-      <div className="flex items-center gap-4 mt-4">
-        <img
+      <div className="mt-4 flex items-center gap-4">
+        <Image
           src={user.profilePic!}
           alt={`${user.name}'s profile`}
-          className="w-12 h-12 rounded-full"
+          className="h-12 w-12 rounded-full"
+          width={48}
+          height={48}
         />
         <div>
           <p className="text-sm text-gray-600">{user.name}</p>
-          <p className="text-xs text-gray-400">Posted on {formatDate(createdAt!)}</p>
+          <p className="text-xs text-gray-400">
+            Posted on {formatDate(createdAt!)}
+          </p>
         </div>
       </div>
     </div>
@@ -95,9 +103,15 @@ const JobHeader = ({
 };
 
 // Job Section Component
-const JobSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const JobSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <div className="mb-6">
-    <h2 className="text-2xl font-semibold mb-2">{title}</h2>
+    <h2 className="mb-2 text-2xl font-semibold">{title}</h2>
     {children}
   </div>
 );

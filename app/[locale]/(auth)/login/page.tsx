@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '@/components/text-input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { login } from './login';
 import { loginSchema, LoginUserInput } from './loginSchema';
@@ -47,7 +47,8 @@ export default function LoginPage() {
       toast({
         variant: 'destructive',
         title: 'Server Error',
-        description: 'An error occurred while processing your request. Please try again later.',
+        description:
+          'An error occurred while processing your request. Please try again later.',
       });
     },
   });
@@ -60,25 +61,33 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
+    setShowPassword(prevState => !prevState);
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     toast({
       title: 'Pasting not allowed',
-      description: 'You cannot paste into the password field for security reasons.',
+      description:
+        'You cannot paste into the password field for security reasons.',
       variant: 'destructive',
     });
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Login</h1>
+    <div className="mx-auto max-w-md">
+      <h1 className="mb-6 text-2xl font-bold">Login</h1>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <TextInput {...register('email')} id="email" label="Email" type="email" />
-          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+          <TextInput
+            {...register('email')}
+            id="email"
+            label="Email"
+            type="email"
+          />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}
         </div>
 
         <div className="relative">
@@ -90,16 +99,22 @@ export default function LoginPage() {
             onPaste={handlePaste} // Display toast on paste attempt
           />
           {/* Show error message */}
-          {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}
 
           {/* Toggle password visibility button */}
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="absolute inset-y-0 right-3 translate-y-3 flex items-center"
+            className="absolute inset-y-0 right-3 flex translate-y-3 items-center"
             tabIndex={-1} // Remove the button from tab navigation
           >
-            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            {showPassword ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
           </button>
         </div>
 

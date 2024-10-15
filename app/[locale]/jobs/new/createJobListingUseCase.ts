@@ -1,16 +1,14 @@
 import { err, ok, Result } from 'neverthrow';
 
 import { JobListingSaveError } from '@/domain/job-listing/JobListingErrors';
-import {
-    DrizzleJobListingRepository
-} from '@/infrastructure/job-listing/DrizzleJobListingRepository';
+import { DrizzleJobListingRepository } from '@/infrastructure/job-listing/DrizzleJobListingRepository';
 import { JobListing } from '@/lib/drizzle/schema';
 
 import { JobListingInput } from './jobListingSchema';
 
 export const createJobListingUseCase = async (
   jobInput: JobListingInput,
-  userId: string,
+  userId: string
 ): Promise<Result<void, JobListingSaveError>> => {
   const newJobListing: JobListing = {
     ...jobInput,
