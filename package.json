@@ -13,7 +13,7 @@
     "start:studio": "drizzle-kit studio",
     "up:migrations": "drizzle-kit migrate",
     "gen:migrations": "drizzle-kit generate",
-    "prepare": "husky"
+    "prepare": "husky && pnpm up:migrations"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
