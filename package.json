@@ -13,9 +13,8 @@
     "start:studio": "drizzle-kit studio",
     "up:migrations": "drizzle-kit migrate",
     "gen:migrations": "drizzle-kit generate",
-    "prepare": "husky && pnpm up:migrations",
-    "seed": "tsx lib/drizzle/seed.ts",
-    "postinstall": "pnpm run seed"
+    "prepare": "husky && pnpm up:migrations && pnpm seed",
+    "seed": "tsx lib/drizzle/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
