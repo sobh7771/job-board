@@ -1,7 +1,7 @@
 'use server';
 
 import { Role } from '@/lib/drizzle/schema';
-import { outputSchema } from '@/lib/lib/schemas/outputSchemas';
+import { actionResponseSchema } from '@/lib/schemas/actionResponseSchema';
 import { HttpStatusCodes } from '@/lib/utils';
 import { authorized } from '@/middleware/authorized';
 
@@ -10,7 +10,7 @@ import { jobListingSchema } from './jobListingSchema';
 
 export const createJobListingAction = authorized([Role.EMPLOYER])
   .schema(jobListingSchema)
-  .outputSchema(outputSchema)
+  .outputSchema(actionResponseSchema)
   .action(async ({ parsedInput, ctx: { userId } }) => {
     const result = await createJobListingUseCase(parsedInput, userId);
 
