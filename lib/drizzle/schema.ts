@@ -2,35 +2,30 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { v4 as uuidv4 } from 'uuid';
 
-// Enums for user roles
 export enum Role {
   JOB_SEEKER = 'job-seeker',
   EMPLOYER = 'employer',
   ADMIN = 'admin',
 }
 
-// Enums for user status
 export enum UserStatus {
   ACTIVE = 'active',
   SUSPENDED = 'suspended',
   INACTIVE = 'inactive',
 }
 
-// Enums for job listing status
 export enum JobListingStatus {
   OPEN = 'open',
   CLOSED = 'closed',
   PENDING = 'pending',
 }
 
-// Enums for application status
 export enum ApplicationStatus {
   SUBMITTED = 'submitted',
   REVIEWED = 'reviewed',
   REJECTED = 'rejected',
 }
 
-// Arrays for enums
 export const roles = [Role.JOB_SEEKER, Role.EMPLOYER, Role.ADMIN] as const;
 export const userStatuses = [
   UserStatus.ACTIVE,
@@ -48,22 +43,21 @@ export const applicationStatuses = [
   ApplicationStatus.REJECTED,
 ] as const;
 
-// Users Table
 export const userTable = sqliteTable('users', {
-  id: text('id').$defaultFn(uuidv4).primaryKey(), // Automatically generate the ID
+  id: text('id').$defaultFn(uuidv4).primaryKey(),
   name: text('name').notNull(),
   email: text('email').unique().notNull(),
   password: text('password').notNull(),
   role: text('role').$type<Role>().default(Role.JOB_SEEKER),
   verified: text('verified').default('false'),
   status: text('status').$type<UserStatus>().default(UserStatus.ACTIVE),
+  profilePic: text('profile_pic').default('https://placehold.co/600'), // Placeholder for profile picture. TODO: Remove this placeholder URL later.
   createdAt: integer('created_at').notNull().default(Date.now()),
   updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
 
-// Job Listings Table
 export const jobListingTable = sqliteTable('job_listings', {
-  id: text('id').$defaultFn(uuidv4).primaryKey(), // Automatically generate the ID
+  id: text('id').$defaultFn(uuidv4).primaryKey(),
   title: text('title').notNull(),
   description: text('description').notNull(),
   company: text('company').notNull(),
@@ -71,9 +65,8 @@ export const jobListingTable = sqliteTable('job_listings', {
   userId: text('user_id')
     .references(() => userTable.id)
     .notNull(),
-  salary: integer('salary').notNull(), // Updated salary to be a number
-  requirements: text('requirements').notNull(), // Added requirements field
-  // keywords: text('keywords').array(), // Added keywords field as an array
+  salary: integer('salary').notNull(),
+  requirements: text('requirements').notNull(),
   status: text('status')
     .$type<JobListingStatus>()
     .default(JobListingStatus.OPEN),
@@ -86,9 +79,9 @@ export const jobListingTable = sqliteTable('job_listings', {
   createdAt: integer('created_at').notNull().default(Date.now()),
   updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
-// Applications Table
+
 export const applicationTable = sqliteTable('applications', {
-  id: text('id').$defaultFn(uuidv4).primaryKey(), // Automatically generate the ID
+  id: text('id').$defaultFn(uuidv4).primaryKey(),
   fullName: text('full_name').notNull(),
   email: text('email').notNull().unique(),
   phone: text('phone').notNull(),
@@ -113,9 +106,8 @@ export const applicationTable = sqliteTable('applications', {
   updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
 
-// Sessions Table
 export const sessionTable = sqliteTable('sessions', {
-  id: text('id').primaryKey(), // Automatically generate the ID
+  id: text('id').primaryKey(),
   userId: text('user_id')
     .references(() => userTable.id)
     .notNull(),
@@ -124,7 +116,6 @@ export const sessionTable = sqliteTable('sessions', {
   updatedAt: integer('updated_at').notNull().default(Date.now()),
 });
 
-// Type Definitions for Type Inference
 export type User = typeof userTable.$inferInsert;
 export type JobListing = typeof jobListingTable.$inferInsert;
 export type Application = typeof applicationTable.$inferInsert;

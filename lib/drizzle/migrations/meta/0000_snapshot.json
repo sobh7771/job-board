@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "9c88d9f4-f7f4-4976-868a-d0e609625fb7",
+  "id": "deb19a53-471a-4e78-8c5a-ae34b36bbc02",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "applications": {
@@ -91,7 +91,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520948
+          "default": 1729134045789
         },
         "updated_at": {
           "name": "updated_at",
@@ -99,7 +99,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520948
+          "default": 1729134045789
         }
       },
       "indexes": {
@@ -195,6 +195,20 @@
           "notNull": true,
           "autoincrement": false
         },
+        "salary": {
+          "name": "salary",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "requirements": {
+          "name": "requirements",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "status": {
           "name": "status",
           "type": "text",
@@ -223,7 +237,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520948
+          "default": 1729134045789
         },
         "updated_at": {
           "name": "updated_at",
@@ -231,7 +245,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520948
+          "default": 1729134045789
         }
       },
       "indexes": {},
@@ -297,7 +311,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520948
+          "default": 1729134045789
         },
         "updated_at": {
           "name": "updated_at",
@@ -305,7 +319,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520948
+          "default": 1729134045789
         }
       },
       "indexes": {},
@@ -378,13 +392,21 @@
           "autoincrement": false,
           "default": "'active'"
         },
+        "profile_pic": {
+          "name": "profile_pic",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'https://example.com/path/to/placeholder/image.jpg'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520947
+          "default": 1729134045788
         },
         "updated_at": {
           "name": "updated_at",
@@ -392,7 +414,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1728431520947
+          "default": 1729134045788
         }
       },
       "indexes": {

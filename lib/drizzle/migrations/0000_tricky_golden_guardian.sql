@@ -10,8 +10,8 @@ CREATE TABLE `applications` (
 	`status` text DEFAULT 'submitted',
 	`created_by` text NOT NULL,
 	`updated_by` text NOT NULL,
-	`created_at` integer DEFAULT 1728431520948 NOT NULL,
-	`updated_at` integer DEFAULT 1728431520948 NOT NULL,
+	`created_at` integer DEFAULT 1729134045789 NOT NULL,
+	`updated_at` integer DEFAULT 1729134045789 NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`job_listing_id`) REFERENCES `job_listings`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`created_by`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
@@ -25,11 +25,13 @@ CREATE TABLE `job_listings` (
 	`company` text NOT NULL,
 	`location` text,
 	`user_id` text NOT NULL,
+	`salary` integer NOT NULL,
+	`requirements` text NOT NULL,
 	`status` text DEFAULT 'open',
 	`created_by` text NOT NULL,
 	`updated_by` text NOT NULL,
-	`created_at` integer DEFAULT 1728431520948 NOT NULL,
-	`updated_at` integer DEFAULT 1728431520948 NOT NULL,
+	`created_at` integer DEFAULT 1729134045789 NOT NULL,
+	`updated_at` integer DEFAULT 1729134045789 NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`created_by`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`updated_by`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
@@ -39,8 +41,8 @@ CREATE TABLE `sessions` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
 	`expires_at` integer NOT NULL,
-	`created_at` integer DEFAULT 1728431520948 NOT NULL,
-	`updated_at` integer DEFAULT 1728431520948 NOT NULL,
+	`created_at` integer DEFAULT 1729134045789 NOT NULL,
+	`updated_at` integer DEFAULT 1729134045789 NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -52,8 +54,9 @@ CREATE TABLE `users` (
 	`role` text DEFAULT 'job-seeker',
 	`verified` text DEFAULT 'false',
 	`status` text DEFAULT 'active',
-	`created_at` integer DEFAULT 1728431520947 NOT NULL,
-	`updated_at` integer DEFAULT 1728431520947 NOT NULL
+	`profile_pic` text DEFAULT 'https://example.com/path/to/placeholder/image.jpg',
+	`created_at` integer DEFAULT 1729134045788 NOT NULL,
+	`updated_at` integer DEFAULT 1729134045788 NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `applications_email_unique` ON `applications` (`email`);--> statement-breakpoint
