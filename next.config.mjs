@@ -9,9 +9,6 @@ const nextConfig = {
     remotePatterns: [{ hostname: 'placehold.co' }],
     dangerouslyAllowSVG: true,
   },
-  experimental: {
-    typedRoutes: true,
-  },
 };
 
 export default withNextIntl(nextConfig);
