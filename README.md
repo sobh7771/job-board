@@ -55,5 +55,14 @@ This project uses the **Dracula** color palette, providing a visually appealing 
    pnpm run up:migrations
    ```
 
+   - **Automatic Seeding**: The seed script will run automatically after the database migrations.
+
+   - **Manual Seeding**: If you need to manually seed the database, you can run:
+
+   ```bash
+   pnpm run seed
+   ```
+
 6. **Start using the app**:
+
    - Access the app at `http://localhost:3000/` after running the server.
