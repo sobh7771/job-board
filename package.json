@@ -13,7 +13,9 @@
     "start:studio": "drizzle-kit studio",
     "up:migrations": "drizzle-kit migrate",
     "gen:migrations": "drizzle-kit generate",
-    "prepare": "husky && pnpm up:migrations"
+    "prepare": "husky && pnpm up:migrations",
+    "seed": "tsx lib/drizzle/seed.ts",
+    "postinstall": "pnpm run seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -34,6 +36,7 @@
     "better-sqlite3": "^11.3.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "embla-carousel-autoplay": "^8.3.0",
     "embla-carousel-react": "^8.3.0",
@@ -73,6 +76,7 @@
     "postcss": "^8.4.47",
     "prettier": "3.3.3",
     "tailwindcss": "^3.4.13",
+    "tsx": "^4.19.1",
     "typescript": "^5.6.2"
   },
   "volta": {
