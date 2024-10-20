@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers';
 
-import getUserUseCase from '../../domain/auth/getUserUseCase';
 import { LuciaAuthRepository } from '../../infrastructure/auth/LuciaAuthRepository';
 import { lucia } from './lucia';
 
@@ -13,9 +12,10 @@ export const getUser = async () => {
   const authRepository = new LuciaAuthRepository();
 
   try {
-    const user = await getUserUseCase(sessionId, authRepository);
+    const { user } = await authRepository.validateSession(sessionId);
     return user;
-  } catch {
+  } catch (error) {
+    console.error('Failed to validate session:', error);
     return null;
   }
 };

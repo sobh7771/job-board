@@ -39,7 +39,7 @@ export class LuciaAuthRepository implements AuthRepository {
     };
   }
   async validateSession(sessionId: string): Promise<SessionValidationResult> {
-    let result = (await lucia.validateSession(
+    const result = (await lucia.validateSession(
       sessionId
     )) as unknown as SessionValidationResult;
     return result;

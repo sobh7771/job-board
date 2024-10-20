@@ -126,14 +126,10 @@ export class DrizzleJobListingRepository implements JobListingRepository {
       conditions.push(like(jobListingTable.title, `%${filter.title}%`));
     }
     if (filter.createdAtBefore) {
-      conditions.push(
-        lt(jobListingTable.createdAt, filter.createdAtBefore.getTime())
-      );
+      conditions.push(lt(jobListingTable.createdAt, filter.createdAtBefore));
     }
     if (filter.createdAtAfter) {
-      conditions.push(
-        gt(jobListingTable.createdAt, filter.createdAtAfter.getTime())
-      );
+      conditions.push(gt(jobListingTable.createdAt, filter.createdAtAfter));
     }
 
     return conditions.length > 0 ? and(...conditions) : undefined;

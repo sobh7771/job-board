@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -48,12 +47,18 @@ export const userTable = sqliteTable('users', {
   name: text('name').notNull(),
   email: text('email').unique().notNull(),
   password: text('password').notNull(),
-  role: text('role').$type<Role>().default(Role.JOB_SEEKER),
+  role: text('role', { enum: roles }).$type<Role>().default(Role.JOB_SEEKER),
   verified: text('verified').default('false'),
-  status: text('status').$type<UserStatus>().default(UserStatus.ACTIVE),
-  profilePic: text('profile_pic').default('https://placehold.co/600'), // Placeholder for profile picture. TODO: Remove this placeholder URL later.
-  createdAt: integer('created_at').notNull().default(Date.now()),
-  updatedAt: integer('updated_at').notNull().default(Date.now()),
+  status: text('status', { enum: userStatuses })
+    .$type<UserStatus>()
+    .default(UserStatus.ACTIVE),
+  profilePic: text('profile_pic').default('https://placehold.co/600'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(
+    () => new Date()
+  ),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .notNull()
+    .default(new Date()),
 });
 
 export const jobListingTable = sqliteTable('job_listings', {
@@ -67,7 +72,7 @@ export const jobListingTable = sqliteTable('job_listings', {
     .notNull(),
   salary: integer('salary').notNull(),
   requirements: text('requirements').notNull(),
-  status: text('status')
+  status: text('status', { enum: jobListingStatuses })
     .$type<JobListingStatus>()
     .default(JobListingStatus.OPEN),
   createdBy: text('created_by')
@@ -76,8 +81,12 @@ export const jobListingTable = sqliteTable('job_listings', {
   updatedBy: text('updated_by')
     .references(() => userTable.id)
     .notNull(),
-  createdAt: integer('created_at').notNull().default(Date.now()),
-  updatedAt: integer('updated_at').notNull().default(Date.now()),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .notNull()
+    .default(new Date()),
 });
 
 export const applicationTable = sqliteTable('applications', {
@@ -93,7 +102,7 @@ export const applicationTable = sqliteTable('applications', {
   jobListingId: text('job_listing_id')
     .references(() => jobListingTable.id)
     .notNull(),
-  status: text('status')
+  status: text('status', { enum: applicationStatuses })
     .$type<ApplicationStatus>()
     .default(ApplicationStatus.SUBMITTED),
   createdBy: text('created_by')
@@ -102,8 +111,12 @@ export const applicationTable = sqliteTable('applications', {
   updatedBy: text('updated_by')
     .references(() => userTable.id)
     .notNull(),
-  createdAt: integer('created_at').notNull().default(Date.now()),
-  updatedAt: integer('updated_at').notNull().default(Date.now()),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .notNull()
+    .default(new Date()),
 });
 
 export const sessionTable = sqliteTable('sessions', {
@@ -112,8 +125,12 @@ export const sessionTable = sqliteTable('sessions', {
     .references(() => userTable.id)
     .notNull(),
   expiresAt: integer('expires_at').notNull(),
-  createdAt: integer('created_at').notNull().default(Date.now()),
-  updatedAt: integer('updated_at').notNull().default(Date.now()),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .notNull()
+    .default(new Date()),
 });
 
 export type User = typeof userTable.$inferInsert;
