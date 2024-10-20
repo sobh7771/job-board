@@ -1,8 +1,10 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import { Role } from '@/lib/drizzle/schema';
 import { actionResponseSchema } from '@/lib/schemas/actionResponseSchema';
-import { HttpStatusCodes } from '@/lib/utils';
+import { AppRoutes, HttpStatusCodes } from '@/lib/utils';
 import { authorized } from '@/middleware/authorized';
 
 import { createJobListingUseCase } from './createJobListingUseCase';
@@ -20,6 +22,8 @@ export const createJobListingAction = authorized([Role.EMPLOYER])
         statusCode: HttpStatusCodes.BAD_REQUEST,
       };
     }
+
+    revalidatePath(AppRoutes.Jobs);
 
     return {
       success: 'Job listing created successfully!',

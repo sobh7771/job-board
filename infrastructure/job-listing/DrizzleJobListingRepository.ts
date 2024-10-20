@@ -1,4 +1,4 @@
-import { and, count, eq, gt, like, lt } from 'drizzle-orm';
+import { and, asc, count, desc, eq, gt, like, lt } from 'drizzle-orm';
 import { Result, ResultAsync } from 'neverthrow';
 
 import { SingleJobListingFilter } from '@/app/[locale]/jobs/[id]/getJobListingWithEmployer';
@@ -40,7 +40,8 @@ export class DrizzleJobListingRepository implements JobListingRepository {
   }
 
   async getJobListingsWithEmployers(
-    filter: JobListingFilter
+    filter: JobListingFilter,
+    sortBy?: SortCriteria
   ): Promise<Result<JobListingWithEmployer[], JobListingFetchError>> {
     return await ResultAsync.fromPromise(
       db
@@ -51,6 +52,7 @@ export class DrizzleJobListingRepository implements JobListingRepository {
         .from(jobListingTable)
         .where(this.buildFilterQuery(filter))
         .leftJoin(userTable, eq(jobListingTable.userId, userTable.id))
+        .orderBy(...this.buildSortQuery(sortBy))
         .execute()
         .then(result =>
           result.map(res => ({
@@ -77,13 +79,15 @@ export class DrizzleJobListingRepository implements JobListingRepository {
   }
 
   async fetchAll(
-    filter: JobListingFilter
+    filter: JobListingFilter,
+    sortBy?: SortCriteria
   ): Promise<Result<JobListing[], JobListingFetchError>> {
     return ResultAsync.fromPromise(
       db
         .select()
         .from(jobListingTable)
         .where(this.buildFilterQuery(filter))
+        .orderBy(...this.buildSortQuery(sortBy))
         .execute()
         .then(result => result as JobListing[]),
       () => new JobListingFetchError()
@@ -134,4 +138,47 @@ export class DrizzleJobListingRepository implements JobListingRepository {
 
     return conditions.length > 0 ? and(...conditions) : undefined;
   }
+
+  private buildSortQuery(sortBy?: SortCriteria) {
+    const sortConditions = [];
+
+    if (sortBy) {
+      for (const criterion of sortBy) {
+        switch (criterion.field) {
+          case 'title':
+            sortConditions.push(
+              criterion.order === 'desc'
+                ? desc(jobListingTable.title)
+                : asc(jobListingTable.title)
+            );
+            break;
+          case 'createdAt':
+            sortConditions.push(
+              criterion.order === 'desc'
+                ? desc(jobListingTable.createdAt)
+                : asc(jobListingTable.createdAt)
+            );
+            break;
+          case 'status':
+            sortConditions.push(
+              criterion.order === 'desc'
+                ? desc(jobListingTable.status)
+                : asc(jobListingTable.status)
+            );
+            break;
+        }
+      }
+    }
+
+    if (sortConditions.length === 0) {
+      sortConditions.push(desc(jobListingTable.createdAt));
+    }
+
+    return sortConditions;
+  }
 }
+
+type SortCriteria = {
+  field: 'title' | 'createdAt' | 'status';
+  order: 'asc' | 'desc';
+}[];
