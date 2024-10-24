@@ -50,6 +50,7 @@ export const useFormatter = <T extends FormatterType>(
         .format(new Date(value)), // Convert timestamp to Date
     number: (value: number) => formatters.number(locale).format(value),
   };
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return formatFunctions[type]; // Return the corresponding formatting function
 };

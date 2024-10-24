@@ -2,16 +2,18 @@ import { useTranslations } from 'next-intl';
 import { MouseEventHandler } from 'react';
 
 import { logout } from '@/app/[locale]/logout';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { useUser } from '@/contexts/user-context';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { useAuthenticatedUser } from '@/hooks/useAuthenticatedUser';
 import { Link, useRouter } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
 import { UserName } from './UserName';
 
 export function AuthButtons() {
-  const user = useUser();
+  const { data: user, isLoading, isError, error } = useAuthenticatedUser();
   const t = useTranslations('rootLayout');
   const { toast } = useToast();
   const router = useRouter();
@@ -47,36 +49,47 @@ export function AuthButtons() {
 
   return (
     <div className="relative">
-      <div
-        className={cn(
-          'flex gap-4  transition-all duration-500',
-          user
-            ? 'slide-in-from-left-50 animate-in fade-in-50'
-            : 'animate-out fade-out-50'
-        )}
-      >
-        {user ? (
-          <>
-            <UserName />
-            <Button
-              variant="outline"
-              onClick={handleLogout}
-              aria-label="Logout"
-            >
-              {t('logout')}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button asChild variant="outline" aria-label="Login">
-              <Link href="/login">{t('login')}</Link>
-            </Button>
-            <Button asChild aria-label="Register">
-              <Link href="/register">{t('register')}</Link>
-            </Button>
-          </>
-        )}
-      </div>
+      {isLoading ? (
+        <Skeleton className="h-8 w-24" />
+      ) : isError ? (
+        <Alert variant="destructive">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            {error?.message || 'Something went wrong!'}
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <div
+          className={cn(
+            'flex gap-4  transition-all duration-500',
+            user
+              ? 'slide-in-from-left-50 animate-in fade-in-50'
+              : 'animate-out fade-out-50'
+          )}
+        >
+          {user ? (
+            <>
+              <UserName />
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                aria-label="Logout"
+              >
+                {t('logout')}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button asChild variant="outline" aria-label="Login">
+                <Link href="/login">{t('login')}</Link>
+              </Button>
+              <Button asChild aria-label="Register">
+                <Link href="/register">{t('register')}</Link>
+              </Button>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

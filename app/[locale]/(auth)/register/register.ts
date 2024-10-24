@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 import { LuciaAuthRepository } from '@/infrastructure/auth/LuciaAuthRepository';
 import { DrizzleUserRepository } from '@/infrastructure/user/DrizzleUserRepository';
-import { actionClient } from '@/lib/safe-action';
+import { publicActionClient } from '@/lib/safe-action';
 import { CacheTags } from '@/lib/utils';
 
 import { registerSchema } from './registerSchema';
@@ -19,7 +19,7 @@ const MESSAGES = {
 };
 
 // Main registration action
-export const register = actionClient
+export const register = publicActionClient
   .schema(registerSchema)
   .action(async ({ parsedInput }) => {
     const authRepository = new LuciaAuthRepository();

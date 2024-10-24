@@ -16,11 +16,10 @@ class UnauthorizedError extends Error {
     this.name = 'UnauthorizedError';
   }
 }
-export const action = createSafeActionClient({
+const action = createSafeActionClient({
   handleServerError(err: unknown) {
     let userFriendlyMessage =
       'Oops! Something went wrong. Please try again later.';
-
     if (err instanceof InvalidSessionError) {
       userFriendlyMessage =
         'Your session has expired. Please log in again to continue.';
@@ -28,12 +27,11 @@ export const action = createSafeActionClient({
       userFriendlyMessage =
         "You don't have permission to access this part of the application. Please contact support if you believe this is an error.";
     }
-
     return userFriendlyMessage;
   },
 });
 
-export const authorized = (requiredRoles: Role[]) => {
+export const authorizedActionClient = (requiredRoles: Role[]) => {
   return action.use<{ userId: string; role: Role }>(async ({ next }) => {
     const user = await getUser();
 

@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 import { LuciaAuthRepository } from '@/infrastructure/auth/LuciaAuthRepository';
 import { DrizzleUserRepository } from '@/infrastructure/user/DrizzleUserRepository';
-import { actionClient } from '@/lib/safe-action';
+import { publicActionClient } from '@/lib/safe-action';
 import { CacheTags } from '@/lib/utils';
 
 import { loginSchema } from './loginSchema';
@@ -16,7 +16,7 @@ const MESSAGES = {
   loginFailure: 'Login failed. Please check your email and password.',
 };
 
-export const login = actionClient
+export const login = publicActionClient
   .schema(loginSchema)
   .action(async ({ parsedInput }) => {
     const authRepository = new LuciaAuthRepository();

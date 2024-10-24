@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useUser } from '@/contexts/user-context';
+import { useAuthenticatedUser } from '@/hooks/useAuthenticatedUser';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import { Role } from '@/lib/drizzle/schema';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,8 @@ export function Navbar() {
   const router = useRouter();
   const t = useTranslations('rootLayout');
   const [menuOpen, setMenuOpen] = useState(false);
-  const user = useUser();
+  const { data: user } = useAuthenticatedUser();
+
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import {
   JobListingFilter,
   JobListingRepository,
   JobListingWithEmployer,
+  SortCriteria,
 } from '@/domain/job-listing/JobListingRepository';
 import { db } from '@/lib/drizzle/db';
 import { JobListing, jobListingTable, userTable } from '@/lib/drizzle/schema';
@@ -40,9 +41,15 @@ export class DrizzleJobListingRepository implements JobListingRepository {
   }
 
   async getJobListingsWithEmployers(
-    filter: JobListingFilter,
-    sortBy?: SortCriteria
+    filter?: JobListingFilter, // Make filter optional
+    sortBy?: SortCriteria,
+    page: number = 1, // Default to page 1
+    perPage: number = 10 // Default to 10 items per page
   ): Promise<Result<JobListingWithEmployer[], JobListingFetchError>> {
+    // Use Math.max to enforce minimum values for page and perPage
+    page = Math.max(page, 1);
+    perPage = Math.max(perPage, 1);
+
     return await ResultAsync.fromPromise(
       db
         .select({
@@ -50,9 +57,11 @@ export class DrizzleJobListingRepository implements JobListingRepository {
           employer: userTable,
         })
         .from(jobListingTable)
-        .where(this.buildFilterQuery(filter))
+        .where(this.buildFilterQuery(filter)) // Call buildFilterQuery with optional filter
         .leftJoin(userTable, eq(jobListingTable.userId, userTable.id))
         .orderBy(...this.buildSortQuery(sortBy))
+        .limit(perPage) // Limit to items per page
+        .offset((page - 1) * perPage) // Calculate offset for pagination
         .execute()
         .then(result =>
           result.map(res => ({
@@ -63,7 +72,6 @@ export class DrizzleJobListingRepository implements JobListingRepository {
       () => new JobListingFetchError()
     );
   }
-
   async fetchById(
     filter: SingleJobListingFilter
   ): Promise<Result<JobListing | null, JobListingFetchError>> {
@@ -79,14 +87,14 @@ export class DrizzleJobListingRepository implements JobListingRepository {
   }
 
   async fetchAll(
-    filter: JobListingFilter,
+    filter?: JobListingFilter, // Make filter optional
     sortBy?: SortCriteria
   ): Promise<Result<JobListing[], JobListingFetchError>> {
     return ResultAsync.fromPromise(
       db
         .select()
         .from(jobListingTable)
-        .where(this.buildFilterQuery(filter))
+        .where(this.buildFilterQuery(filter)) // Call buildFilterQuery with optional filter
         .orderBy(...this.buildSortQuery(sortBy))
         .execute()
         .then(result => result as JobListing[]),
@@ -104,39 +112,43 @@ export class DrizzleJobListingRepository implements JobListingRepository {
   }
 
   async count(
-    filter: JobListingFilter
+    filter?: JobListingFilter // Make filter optional
   ): Promise<Result<number, JobListingFetchError>> {
     return ResultAsync.fromPromise(
       db
         .select({ count: count() })
         .from(jobListingTable)
-        .where(this.buildFilterQuery(filter))
+        .where(this.buildFilterQuery(filter)) // Call buildFilterQuery with optional filter
         .execute()
         .then(result => (result.length > 0 ? result[0].count : 0)),
       () => new JobListingFetchError()
     );
   }
 
-  private buildFilterQuery(filter: JobListingFilter) {
+  private buildFilterQuery(filter?: JobListingFilter) {
+    // Make filter optional
     const conditions = [];
 
-    if (filter.userId) {
-      conditions.push(eq(jobListingTable.userId, filter.userId));
-    }
-    if (filter.status) {
-      conditions.push(eq(jobListingTable.status, filter.status));
-    }
-    if (filter.title) {
-      conditions.push(like(jobListingTable.title, `%${filter.title}%`));
-    }
-    if (filter.createdAtBefore) {
-      conditions.push(lt(jobListingTable.createdAt, filter.createdAtBefore));
-    }
-    if (filter.createdAtAfter) {
-      conditions.push(gt(jobListingTable.createdAt, filter.createdAtAfter));
+    if (filter) {
+      // Check if filter is provided
+      if (filter.userId) {
+        conditions.push(eq(jobListingTable.userId, filter.userId));
+      }
+      if (filter.status) {
+        conditions.push(eq(jobListingTable.status, filter.status));
+      }
+      if (filter.title) {
+        conditions.push(like(jobListingTable.title, `%${filter.title}%`));
+      }
+      if (filter.createdAtBefore) {
+        conditions.push(lt(jobListingTable.createdAt, filter.createdAtBefore));
+      }
+      if (filter.createdAtAfter) {
+        conditions.push(gt(jobListingTable.createdAt, filter.createdAtAfter));
+      }
     }
 
-    return conditions.length > 0 ? and(...conditions) : undefined;
+    return conditions.length > 0 ? and(...conditions) : undefined; // Return undefined if no conditions
   }
 
   private buildSortQuery(sortBy?: SortCriteria) {
@@ -177,8 +189,3 @@ export class DrizzleJobListingRepository implements JobListingRepository {
     return sortConditions;
   }
 }
-
-type SortCriteria = {
-  field: 'title' | 'createdAt' | 'status';
-  order: 'asc' | 'desc';
-}[];

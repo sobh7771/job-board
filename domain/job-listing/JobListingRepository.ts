@@ -1,4 +1,5 @@
 import { Result } from 'neverthrow';
+import { z } from 'zod';
 
 import { SingleJobListingFilter } from '@/app/[locale]/jobs/[id]/getJobListingWithEmployer';
 import { JobListing, User } from '@/lib/drizzle/schema';
@@ -6,6 +7,17 @@ import { JobListing, User } from '@/lib/drizzle/schema';
 import { UserDTO } from '../user/userDTOSchema';
 import { JobListingFetchError, JobListingSaveError } from './JobListingErrors';
 import { JobListingFilter } from './JobListingFilterSchema';
+
+// Schema Definition
+export const SortCriteriaSchema = z.array(
+  z.object({
+    field: z.enum(['title', 'createdAt', 'status']),
+    order: z.enum(['asc', 'desc']),
+  })
+);
+
+// Type Definition
+export type SortCriteria = z.infer<typeof SortCriteriaSchema>;
 
 export type JobListingWithEmployer = JobListing & {
   employer: User;

@@ -1,16 +1,13 @@
 import './globals.css';
 import './markdown-editor.css';
 
-import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Cairo, Inter } from 'next/font/google';
 
-import { getCachedAuthenticatedUser } from '@/application/auth/cachedAuthenticatedUser';
 import { AnnouncementBar } from '@/components/announcement-bar';
+import AppProviders from '@/components/AppProviders';
 import { Navbar } from '@/components/navbar';
-import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import { UserContextProvider } from '@/contexts/user-context';
 import { getTextDirection } from '@/lib/utils';
 
 import Footer from './footer';
@@ -46,18 +43,14 @@ export default async function RootLayout({
     <html lang={locale} dir={dir}>
       <body className={`${inter.className} ${cairo.className}`}>
         <div className="flex min-h-screen flex-col">
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <NextIntlClientProvider messages={messages}>
-              <UserContextProvider value={await getCachedAuthenticatedUser()}>
-                <AnnouncementBar />
-                <Navbar />
-                <main className="container mx-auto flex-grow px-4 py-8">
-                  {children}
-                </main>
-              </UserContextProvider>
-            </NextIntlClientProvider>
+          <AppProviders messages={messages}>
+            <AnnouncementBar />
+            <Navbar />
+            <main className="container mx-auto flex-grow px-4 py-8">
+              {children}
+            </main>
             <Footer />
-          </ThemeProvider>
+          </AppProviders>
         </div>
         <Toaster />
       </body>

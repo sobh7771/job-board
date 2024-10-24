@@ -28,7 +28,8 @@ export function sleep(ms: number) {
 
 export enum CacheTags {
   AUTHENTICATED_USER = 'authenticated-user',
-  JOB_LISTINGS = 'job-listings',
+  JOB_LISTING_WITH_EMPLOYER = 'job-listing-with-employer',
+  JOB_LISTINGS_WITH_EMPLOYERS = 'job-listings-with-employers',
   USER_PROFILE = 'user-profile',
   SETTINGS = 'settings',
 }

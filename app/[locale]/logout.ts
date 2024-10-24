@@ -5,12 +5,12 @@ import { cookies } from 'next/headers';
 
 import { LuciaAuthRepository } from '@/infrastructure/auth/LuciaAuthRepository';
 import { lucia } from '@/lib/auth/lucia';
-import { actionClient } from '@/lib/safe-action';
+import { publicActionClient } from '@/lib/safe-action';
 import { CacheTags } from '@/lib/utils';
 
 import { logoutUseCase } from './logoutUseCase';
 
-export const logout = actionClient.action(async () => {
+export const logout = publicActionClient.action(async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value;
 
   if (!sessionId) {

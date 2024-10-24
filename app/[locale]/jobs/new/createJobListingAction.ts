@@ -5,12 +5,12 @@ import { revalidatePath } from 'next/cache';
 import { Role } from '@/lib/drizzle/schema';
 import { actionResponseSchema } from '@/lib/schemas/actionResponseSchema';
 import { AppRoutes, HttpStatusCodes } from '@/lib/utils';
-import { authorized } from '@/middleware/authorized';
+import { authorizedActionClient } from '@/middleware/authorized';
 
 import { createJobListingUseCase } from './createJobListingUseCase';
 import { jobListingSchema } from './jobListingSchema';
 
-export const createJobListingAction = authorized([Role.EMPLOYER])
+export const createJobListingAction = authorizedActionClient([Role.EMPLOYER])
   .schema(jobListingSchema)
   .outputSchema(actionResponseSchema)
   .action(async ({ parsedInput, ctx: { userId } }) => {
